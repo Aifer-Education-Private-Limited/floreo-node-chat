@@ -2,6 +2,7 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
+const BASE_URL = "https://uatfloreo.m.frappe.cloud";
 
 const app = express();
 app.use(cors());
@@ -22,7 +23,7 @@ io.on("connection", (socket) => {
     const parsed = typeof d === "string" ? JSON.parse(d) : d;
     const users = parsed?.users;
     
-    const res = await fetch("http://floreo.localhost:8001/api/method/floreo.api.student_app.chat.join_chat", {
+    const res = await fetch(`${BASE_URL}/api/method/floreo.api.student_app.chat.join_chat`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ users }),
@@ -35,7 +36,7 @@ io.on("connection", (socket) => {
     socket.join(chatId);
     socket.emit("chatJoined", { chatId });
 
-    const msgRes = await fetch("http://floreo.localhost:8001/api/method/floreo.api.student_app.chat.get_messages", {
+    const msgRes = await fetch(`${BASE_URL}/api/method/floreo.api.student_app.chat.get_messages`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chat_id: chatId }),
@@ -55,7 +56,7 @@ io.on("connection", (socket) => {
     const parsed = typeof d === "string" ? JSON.parse(d) : d;
     const users = parsed?.users;
     const subject = parsed?.subject;
-    const res = await fetch("http://floreo.localhost:8001/api/method/floreo.api.student_app.chat.join_group", {
+    const res = await fetch(`${BASE_URL}/api/method/floreo.api.student_app.chat.join_group`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ users, subject }),
@@ -67,7 +68,7 @@ io.on("connection", (socket) => {
     socket.join(chatId);
     socket.emit("groupJoined", { chatId });
 
-    const msgRes = await fetch("http://floreo.localhost:8001/api/method/floreo.api.student_app.chat.get_messages", {
+    const msgRes = await fetch(`${BASE_URL}/api/method/floreo.api.student_app.chat.get_messages`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chat_id: chatId }),
@@ -95,7 +96,7 @@ io.on("connection", (socket) => {
     const isPDF = parsed?.isPDF;
 
 
-  const res = await fetch("http://floreo.localhost:8001/api/method/floreo.api.student_app.chat.send_message", {
+  const res = await fetch(`${BASE_URL}/api/method/floreo.api.student_app.chat.send_message`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body :JSON.stringify({ message, sourceId, targetId, chatId, isImage, isVoice, isPDF }),
@@ -117,7 +118,7 @@ io.on("connection", (socket) => {
     const isImage = parsed?.isImage;
     const isVoice = parsed?.isVoice;
     const isPDF = parsed?.isPDF;
-    const res = await fetch("http://floreo.localhost:8001/api/method/floreo.api.student_app.chat.send_group_message", {
+    const res = await fetch(`${BASE_URL}/api/method/floreo.api.student_app.chat.send_group_message`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message, sourceId, chatId, isImage, isVoice, isPDF }),
